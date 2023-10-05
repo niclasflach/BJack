@@ -6,7 +6,6 @@ import keyboard
 import time
 import os
 
-
 __author__ = "Niclas Flach"
 __version__ = "0.1.0"
 
@@ -45,9 +44,6 @@ class Deck():
         for card in self.cards:
             card.show()
     
-        
-    
-
 class Player :
 
     def __init__(self):
@@ -76,7 +72,7 @@ def main():
     """ Main entry point of the app """
     def draw_screen():
         os.system('cls')
-        print("-----------------------")
+        print(f"-----Bet:${bet}----------")
         print(f"Dealers cards: ")
         dealer.print_cards()
         print("-----------------------")
@@ -136,10 +132,18 @@ def main():
     bet = 10
     while True:           
         game()
-        print("Spela igen (j/n)")
+        print("Spela igen (c för att ändra bet) (j/n)")
         while True:
             key = keyboard.read_key()
             if key == 'j':
+                print("Blandar kortleken...")
+                player.cards_reset()
+                dealer.cards_reset()
+                time.sleep(1)
+                break
+            if key == 'c':
+                bet = int(input("Ny bet storlek:"))
+                print(f"Nytt bet : ${bet}")
                 print("Blandar kortleken...")
                 player.cards_reset()
                 dealer.cards_reset()
