@@ -22,9 +22,7 @@ class Card :
             self.value = 11
         else:
             self.value = valor
-    def show(self):
-        print(f"{self.color}{self.valor} has the value:{str(self.value)}")
-            
+
 class Deck():
     
     def __init__(self):
@@ -40,9 +38,6 @@ class Deck():
     def shuffle(self):
         random.shuffle(self.cards)
 
-    def visa_kort(self):
-        for card in self.cards:
-            card.show()
     
 class Player :
 
@@ -65,7 +60,8 @@ class Player :
         #nollställer handensvärde då jag gör en ny beräkning när korten printas
         self.hand_value = 0 
         for card in self.card_in_hand:#Ittererar genom korten som är på hand
-            print(f"{card.color}{card.valor} värde: {card.value}") #Printar kort
+            #print(f"{card.color}{card.valor} värde: {card.value}") #Printar kort med värde mest för debug
+            print(f"{card.color}{card.valor}") #Printar kort utan värde
             self.hand_value += card.value #Adderar kortets värde till handens
         print (f"kortens värde: {self.hand_value}") #Printar handens värde
 
