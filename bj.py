@@ -47,30 +47,39 @@ class Deck():
 class Player :
 
     def __init__(self):
+        #Initiering av player
+        #pengar att starta med
         self.money = 100
+        #tom lista med korten som objectet har på hand
         self.card_in_hand = []
+        #sammanräkning av värdet på handen.
+        #Måste lösa hur Ess hanteras!
         self.hand_value = 0
     
-    def get_cards(self):
-        return [card for card in self.card_in_hand]
+    
     def cards_reset(self):
         self.hand_value = 0 
         self.card_in_hand = []
     
     def print_cards(self):
-        self.hand_value = 0
-        for card in self.card_in_hand:
-            print(f"{card.color}{card.valor} värde: {card.value}")
-            self.hand_value += card.value
-        print (f"kortens värde: {self.hand_value}")
+        #nollställer handensvärde då jag gör en ny beräkning när korten printas
+        self.hand_value = 0 
+        for card in self.card_in_hand:#Ittererar genom korten som är på hand
+            print(f"{card.color}{card.valor} värde: {card.value}") #Printar kort
+            self.hand_value += card.value #Adderar kortets värde till handens
+        print (f"kortens värde: {self.hand_value}") #Printar handens värde
 
     
 
 def main():
-    player = Player()
-    dealer = Player()
-    """ Main entry point of the app """
+    player = Player() #skapar object av klassen player för spelaren
+    dealer = Player() #skapar object av klassen player för dealern
+    
+    
     def draw_screen():
+        '''
+        Funktion för att rita skärmen
+        '''
         os.system('cls')
         print(f"-----Bet:${bet}----------")
         print(f"Dealers cards: ")
@@ -84,14 +93,20 @@ def main():
         print("| tryck s för att stanna  |")
         print("---------------------------")
         return
+    
+    
     def game():
-        deck = Deck()
-        deck.shuffle()
-        dealing = True
+        deck = Deck() #skapar object av klassen Deck dvs kortlek
+        deck.shuffle() #anropar method för att blandda kortleken.
+        dealing = True # Omgång pågår
+        
+        #Drar dom obligatoriska korten
         player.card_in_hand.append(deck.cards.pop())
         dealer.card_in_hand.append(deck.cards.pop())
         player.card_in_hand.append(deck.cards.pop())
-        while dealing:
+        
+        
+        while dealing: #loop för en omgång
             draw_screen()
             if player.hand_value >21:
                 player.money -= bet
@@ -99,49 +114,69 @@ def main():
                 print("Du blev tjock")
                 dealing = False
                 break
+            #while loop för att få tangentbordsnedtryckning
+            #Går säkert att lösa snyggare men duger så länge
             while True:
                 key = keyboard.read_key()
                 if key == 'h':
+                    #Spelaren tar ett kort
                     player.card_in_hand.append(deck.cards.pop())
                     print("Tar ett kort...")
                     time.sleep(2)
                     break
                 elif key == 's':
+                    #Spelare stannar!
                     dealing = False
                     while dealer.hand_value < 17:
+                        #Dealern tar kort så länge det är under 17.
                         print("Dealern tar ett kort")
                         time.sleep(2)
                         dealer.card_in_hand.append(deck.cards.pop())
                         draw_screen()
+                    #Dealern har tagit färdigt kort.
+                    #Nu tar vi reda på vem som vann
                     if dealer.hand_value > player.hand_value and dealer.hand_value < 22:
+                        #dealern är inte tjock och har högre värde än spelaren
                         print("Dealern vann...")
-                        player.money -= bet
-                        draw_screen()
-                        time.sleep(1)
+                        player.money -= bet# Så då tar vi pengar från spelaren
+                        draw_screen() #och ritar om skärmen
+                        time.sleep(1) #och väntar en sekund för dramatikens skull =)
                         break
                     elif dealer.hand_value == player.hand_value:
+                        #Dealer och spelare har samma värde
                         print("Det blev lika")
+                        #Inga pengar delas ut eller dras av
                         break
                     else:
+                        #Ojdå spelaren vann
                         print("Du vann")
-                        player.money += bet
-                        draw_screen()
-                        time.sleep(1)
+                        player.money += bet #Ger spelaren pengar
+                        draw_screen() # Ritar om skärmen
+                        time.sleep(1) # och en sekunds paus
                         break
         return
-    bet = 10
-    while True:           
-        game()
-        print("Spela igen (c för att ändra bet) (j/n)")
-        while True:
+    
+    
+    bet = 10 # default värde för insatsen
+    #Main loopen
+    while True:
+                   
+        game() #starta en om gång
+        print("Spela igen (c för att ändra bet) (j/n)") #fråga spelaren om han vill spela en gång till
+        
+        while True:# Och väntar på tangetbordsnedtryckning
             key = keyboard.read_key()
             if key == 'j':
+                # En om gång till på gång!
                 print("Blandar kortleken...")
                 player.cards_reset()
                 dealer.cards_reset()
                 time.sleep(1)
                 break
+            
             if key == 'c':
+                #spelaren vill ändra bet
+                #lägga detta i funktion?
                 bet = int(input("Ny bet storlek:"))
                 print(f"Nytt bet : ${bet}")
                 print("Blandar kortleken...")
@@ -149,7 +184,9 @@ def main():
                 dealer.cards_reset()
                 time.sleep(1)
                 break
+            
             elif key == 'n':
+                #Spelaren har tröttnat så vi avslutar
                 quit()
         
 if __name__ == "__main__":
