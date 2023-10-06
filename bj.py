@@ -5,6 +5,8 @@ import random
 import keyboard
 import time
 import os
+from art import text2art, aprint
+
 
 __author__ = "Niclas Flach"
 __version__ = "0.1.0"
@@ -61,10 +63,12 @@ class Player :
         self.hand_value = 0 
         for card in self.card_in_hand:#Ittererar genom korten som är på hand
             #print(f"{card.color}{card.valor} värde: {card.value}") #Printar kort med värde mest för debug
-            print(f"{card.color}{card.valor}") #Printar kort utan värde
+            print(f"{card.color} {card.valor}".center(25)) #Printar kort utan värde
             self.hand_value += card.value #Adderar kortets värde till handens
-        print (f"kortens värde: {self.hand_value}") #Printar handens värde
+        print (f"kortens värde: {self.hand_value}".center(25)) #Printar handens värde
 
+def pprint(text):
+    print("\033[30m {}\033[47m" .format(f"".join(text)))
     
 
 def main():
@@ -76,18 +80,20 @@ def main():
         '''
         Funktion för att rita skärmen
         '''
+        print("\033[30m {}\033[47m" .format(f""))
         os.system('cls')
-        print(f"-----Bet:${bet}----------")
-        print(f"Dealers cards: ")
+        #print("\033[92m {}\033[00m" .format(skk))
+        print(f"-------Bet:${bet}-------".center(25))
+        print("Dealers cards: ".center(25))
         dealer.print_cards()
-        print("-----------------------")
-        print(f"You have ${player.money}")
-        print(f"Players cards: ")
+        print("-----------------------".center(25))
+        print(f"You have ${player.money}".center(25))
+        print("Players cards: ".center(25))
         player.print_cards()
-        print("---------------------------")
-        print("| tryck h för att ta kort |")
-        print("| tryck s för att stanna  |")
-        print("---------------------------")
+        print("---------------------------".center(25))
+        print("| tryck h för att ta kort |".center(25))
+        print("| tryck s för att stanna  |".center(25))
+        print("---------------------------".center(25))
         return
     
     
